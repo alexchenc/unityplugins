@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.unity3d.player.UnityPlayerActivity;
 
 public class MainActivity extends UnityPlayerActivity {
+//public class MainActivity extends Activity {  //单独打包调试apk
 
     public static final String UNITY_GAMEOBJECT = "AndroidManager";
 
@@ -13,10 +14,11 @@ public class MainActivity extends UnityPlayerActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
-        super.onCreate(savedInstanceState);
+        //支付宝沙箱调试时启用
+//        EnvUtils.setEnv(EnvUtils.EnvEnum.SANDBOX);
 
-        //直接打包apk时需要设置下面这一行
-//        setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);   //单独打包调试apk时需要设置
         Instance = this;
     }
 
@@ -38,19 +40,21 @@ public class MainActivity extends UnityPlayerActivity {
      * 调用支付宝API
      */
     public void openAlipay(String orderStr) {
+        AlipayService.GetInstance().openAlipay(orderStr);
     }
 
     /**
      * 调用微信API
      */
-    public void openWechat() {
-
+    public void openWechatPay(String orderStr) {
+        WechatService.GetInstance().openWechatPay(orderStr);
     }
 
     /**
-     * 微信登录接口
+     * 调用微信登录
      */
     public void openWechatLogin() {
+        WechatService.GetInstance().openWechatLogin();
     }
 
     /**
@@ -63,7 +67,7 @@ public class MainActivity extends UnityPlayerActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //是否调用相机/相册
+        //调用相机/相册
         PhotoService.GetInstance().onActivityResult(requestCode, resultCode, data);
     }
 
